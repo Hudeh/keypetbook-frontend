@@ -23,7 +23,7 @@ const dispatch = useDispatch()
 
    const continueWithGoogle = async () => {
         try {
-            const res = await axios.get("http://127.0.0.1:8000/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/dashboard")
+            const res = await axios.get("https://keypetbooks-api.herokuapp.com/auth/o/google-oauth2/?redirect_uri=https://keypetbooks.herokuapp.com/dashboard")
 
             window.location.replace(res.data.authorization_url);
         } catch (err) {
