@@ -13,7 +13,9 @@ import {
     GOOGLE_AUTH_FAIL,
     LOGOUT,
     SHOW_MESSAGE,
-    HIDE_MESSAGE
+    HIDE_MESSAGE,
+    FETCH_ALL_REPORT_SUCCESS,
+    FETCH_REPORT_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -23,7 +25,8 @@ const initialState = {
     user: {},
     alertMessage: "",
     showMessage: false,
-    isLoading: false
+    isLoading: false,
+    covid_csv:[]
 };
 
 const auth= (state = initialState, action) =>{
@@ -47,6 +50,12 @@ const auth= (state = initialState, action) =>{
             return {
                 ...state,
                 isAuthenticated: true,
+                isLoading: false
+            }
+            case FETCH_ALL_REPORT_SUCCESS:
+            return {
+                ...state,
+                covid_csv:payload,
                 isLoading: false
             }
         case LOGIN_SUCCESS:
@@ -81,6 +90,7 @@ const auth= (state = initialState, action) =>{
                 ...state,
                 user: null,
             }
+        case FETCH_REPORT_FAIL:
         case GOOGLE_AUTH_FAIL:
         case LOGIN_FAIL:
         case SIGNUP_FAIL:

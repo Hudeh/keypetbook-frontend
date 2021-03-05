@@ -27,7 +27,7 @@ const Home = ({ match, history }) => {
   };
 
   const authuser = useSelector((state) => state.auth);
-  const {isAuthenticated, user } = authuser;
+  const {isAuthenticated, user, covid_csv } = authuser;
   const {first_name, last_name} = user;
   return (
     <>
@@ -55,7 +55,7 @@ const Home = ({ match, history }) => {
             </li>
           </ul>
         </header>
-         <Report />
+         <Report covid_csv={covid_csv} />
         <footer>
           <p>
             Created with <i className="fa fa-heart"></i> by --

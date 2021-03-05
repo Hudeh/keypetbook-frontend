@@ -15,7 +15,9 @@ import {
     GOOGLE_AUTH_FAIL,
     LOGOUT,
     SHOW_MESSAGE,
-    HIDE_MESSAGE
+    HIDE_MESSAGE,
+    FETCH_ALL_REPORT_SUCCESS,
+    FETCH_REPORT_FAIL
 } from './types';
 import {stopSubmit, reset}from 'redux-form'
 
@@ -34,6 +36,35 @@ export const showMessage = (message) => (dispatch) => {
   );
 };
 
+export const import_csv = () => async dispatch => {
+    if (localStorage.getItem('access')) {
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `JWT ${localStorage.getItem('access')}`,
+                'Accept': 'application/json'
+            }
+        }; 
+
+        try {
+            const res = await axios.get("api/covid/csv", config);
+    
+            dispatch({
+                type: FETCH_ALL_REPORT_SUCCESS,
+                payload: res.data
+            });
+        } catch (err) {
+            dispatch({
+                type: FETCH_REPORT_FAIL
+            });
+            console.log("err******:",err)
+        }
+    } else {
+        dispatch({
+            type: FETCH_REPORT_FAIL
+        });
+    }
+};
 export const load_user = () => async dispatch => {
     if (localStorage.getItem('access')) {
         const config = {
