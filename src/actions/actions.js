@@ -1,4 +1,5 @@
-import axios from 'axios';
+import {post} from 'axios';
+import axios from './Api';
 import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
@@ -12,8 +13,26 @@ import {
     ACTIVATION_FAIL,
     GOOGLE_AUTH_SUCCESS,
     GOOGLE_AUTH_FAIL,
-    LOGOUT
+    LOGOUT,
+    SHOW_MESSAGE,
+    HIDE_MESSAGE
 } from './types';
+import {stopSubmit, reset}from 'redux-form'
+
+
+export const showMessage = (message) => (dispatch) => {
+  dispatch({
+    type: SHOW_MESSAGE,
+    payload: message,
+  });
+  setTimeout(
+    () =>
+      dispatch({
+        type: HIDE_MESSAGE,
+      }),
+    4000
+  );
+};
 
 export const load_user = () => async dispatch => {
     if (localStorage.getItem('access')) {
@@ -26,7 +45,7 @@ export const load_user = () => async dispatch => {
         }; 
 
         try {
-            const res = await axios.get(`${process.env.API_URL}/auth/users/me/`, config);
+            const res = await axios.get("auth/users/me/", config);
     
             dispatch({
                 type: USER_LOADED_SUCCESS,
@@ -43,7 +62,6 @@ export const load_user = () => async dispatch => {
         });
     }
 };
-
 export const googleAuthenticate = (state, code) => async dispatch => {
     if (state && code && !localStorage.getItem('access')) {
         const config = {
@@ -60,13 +78,14 @@ export const googleAuthenticate = (state, code) => async dispatch => {
         const formBody = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
 
         try {
-            const res = await axios.post(`127.0.0.1:8000/auth/o/google-oauth2/?${formBody}`, config);
+            const res = await post(`http://127.0.0.1:8000/auth/o/google-oauth2/?${formBody}`, config);
 
             dispatch({
                 type: GOOGLE_AUTH_SUCCESS,
                 payload: res.data
             });
-
+            localStorage.setItem('access', res.data.access);
+        localStorage.setItem('refresh', res.data.refresh);
             dispatch(load_user());
         } catch (err) {
             dispatch({
@@ -75,7 +94,6 @@ export const googleAuthenticate = (state, code) => async dispatch => {
         }
     }
 };
-
 
 
 export const checkAuthenticated = () => async dispatch => {
@@ -90,7 +108,7 @@ export const checkAuthenticated = () => async dispatch => {
         const body = JSON.stringify({ token: localStorage.getItem('access') });
 
         try {
-            const res = await axios.post(`${process.env.REACT_APP_API_URL}/auth/jwt/verify/`, body, config)
+            const res = await axios.post("auth/jwt/verify/", body, config)
 
             if (res.data.code !== 'token_not_valid') {
                 dispatch({
@@ -113,7 +131,6 @@ export const checkAuthenticated = () => async dispatch => {
         });
     }
 };
-
 export const login = ({ email, password }) => async dispatch => {
     const config = {
         headers: {
@@ -124,18 +141,25 @@ export const login = ({ email, password }) => async dispatch => {
     const body = { email, password };
 
     try {
-        const res = await axios.post(`${process.env.API_URL}/auth/jwt/create/`, body, config);
+        const res = await axios.post("auth/jwt/create/", body, config);
 
         dispatch({
             type: LOGIN_SUCCESS,
             payload: res.data
         });
-
+        console.log(res);
+        localStorage.setItem('access', res.data.access);
+        localStorage.setItem('refresh', res.data.refresh);
         dispatch(load_user());
+      dispatch(stopSubmit("AuthLayout"))
+        dispatch(reset("AuthLayout"))
+        dispatch(showMessage("Account: Login Success"))
     } catch (err) {
         dispatch({
             type: LOGIN_FAIL
         })
+        console.log(err)
+        dispatch(showMessage("Account: Login Fail"))
     }
 };
 
@@ -149,16 +173,24 @@ export const signup = ({ first_name, last_name, email, password, re_password }) 
     const body = { first_name, last_name, email, password, re_password };
 
     try {
-        const res = await axios.post(`${process.env.API_URL}/auth/users/`, body, config);
+        const res = await axios.post("auth/users/", body, config);
 
         dispatch({
             type: SIGNUP_SUCCESS,
             payload: res.data
         });
+        dispatch(stopSubmit("AuthLayout"))
+        dispatch(reset("AuthLayout"))
+        dispatch(showMessage("Account Created: Check your Email"))
     } catch (err) {
         dispatch({
-            type: SIGNUP_FAIL
+            type: SIGNUP_FAIL,
+            payload: err
         })
+        console.log(err)
+        dispatch(stopSubmit("AuthLayout"))
+        dispatch(reset("AuthLayout"))
+        dispatch(showMessage("Account: SIGNUP FAIL"))
     }
 };
 
@@ -172,7 +204,7 @@ export const verify = (uid, token) => async dispatch => {
     const body = JSON.stringify({ uid, token });
 
     try {
-        await axios.post(`${process.env.API_URL}/auth/users/activation/`, body, config);
+        await axios.post("auth/users/activation/", body, config);
 
         dispatch({
             type: ACTIVATION_SUCCESS,

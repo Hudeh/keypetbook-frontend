@@ -1,17 +1,18 @@
-import React, { useState,useEffect } from "react";
+import React from "react";
 import { Redirect } from "react-router-dom";
-import { connect, useDispatch, useSelector } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { signup,login,checkAuthenticated, load_user } from "../actions/auth";
+import { signup,login} from "../actions/actions";
 import axios from "axios";
 import { FaGoogle } from "react-icons/fa";
-import { ToastContainer, toast } from 'react-toastify';
+
+
 
 
 
 const AuthLayout = ({handleSubmit}) => {
   const authState = useSelector(state => state.auth);
-  const {isAuthenticated,accountCreated} = authState;
+  const {isAuthenticated, alertMessage, showMessage} = authState;
 const dispatch = useDispatch()
 
  const onSubmitSignup = (formValues) => {
@@ -22,21 +23,20 @@ const dispatch = useDispatch()
 
    const continueWithGoogle = async () => {
         try {
-            const res = await axios.get("http://127.0.0.1:8000/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/google")
+            const res = await axios.get("http://127.0.0.1:8000/auth/o/google-oauth2/?redirect_uri=http://localhost:3000/dashboard")
 
             window.location.replace(res.data.authorization_url);
         } catch (err) {
 
         }
     };   
-
-  if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
-  }
-  if (accountCreated) {
-    return <Redirect to="/success" />;
-  }
-
+  
+// if (accountCreated) {
+//   return <Redirect to="/success" />;
+// }
+if (isAuthenticated) {
+  return <Redirect to="/dashboard" />;
+}
 
 
   document.addEventListener("DOMContentLoaded", function (history) {
@@ -55,13 +55,14 @@ const dispatch = useDispatch()
 
   return (
     <>
+    {showMessage && <div id="alert-message"><p>{alertMessage}</p></div>}
       <h2>KeyPetBooks Challenge : Sign in/up Form</h2>
       <div className="container" id="container">
         <div className="form-container sign-up-container">
           <form onSubmit={handleSubmit(onSubmitSignup)}>
             <h3>Create Account</h3>
             <div className="social-container">
-              <a className="social" onClick={()=>continueWithGoogle()}>
+              <a href="#/" className="social" onClick={()=>continueWithGoogle()}>
                 <FaGoogle/>
               </a>
             </div>
@@ -115,7 +116,7 @@ const dispatch = useDispatch()
           <form onSubmit={handleSubmit(onSubmitLogin)}>
             <h1>Sign in</h1>
             <div className="social-container">
-              <a className="social" onClick={continueWithGoogle}>
+              <a href="#/" className="social" onClick={continueWithGoogle}>
                 <FaGoogle/>
               </a>
             </div>
@@ -137,7 +138,7 @@ const dispatch = useDispatch()
               required
               component={"input"}
             />
-            <a href="#">Forgot your password?</a>
+            <a href="#/">Forgot your password?</a>
             <button type="submit"> Sign In</button>
           </form>
         </div>

@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export const tokenConfig = getState=> {
-    const acess = getState().auth.acess;
-  if (typeof acess  !== "undefined" && acess ) {
+    const token = getState().auth.acess;
+  if (typeof token  !== "undefined" && token ) {
     // Apply for every request
-    axios.defaults.headers.common["Authorization"] = "JWT" + acess;
+    axios.defaults.headers.common["Authorization"] = "JWT" + token;
   } else {
     // Delete auth header
     delete axios.defaults.headers.common["Authorization"];
