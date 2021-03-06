@@ -118,6 +118,7 @@ export const googleAuthenticate = (state, code) => async dispatch => {
             localStorage.setItem('access', res.data.access);
         localStorage.setItem('refresh', res.data.refresh);
             dispatch(load_user());
+            dispatch(showMessage("Account Success: Please Login with Google to continue"))
         } catch (err) {
             dispatch({
                 type: GOOGLE_AUTH_FAIL

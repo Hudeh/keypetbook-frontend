@@ -1,27 +1,12 @@
-import React, { useEffect }  from "react";
-import { Link, useLocation } from "react-router-dom";
+import React  from "react";
+import { Link} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logout,googleAuthenticate } from "../actions/actions";
+import { logout} from "../actions/actions";
 import Report from './Report'
-import queryString from 'query-string';
+
 
 const Home = ({ match, history }) => {
   const dispatch = useDispatch();
-  let location = useLocation();
-
-  useEffect(() => {
-      const values = queryString.parse(location.search);
-      const state = values.state ? values.state : null;
-      const code = values.code ? values.code : null;
-
-      console.log('State: ' + state);
-      console.log('Code: ' + code);
-
-      if (state && code) {
-        dispatch(googleAuthenticate(state, code));
-      }
-  }, [location]);
-
   const logoutButton = () => {
     dispatch(logout());
   };

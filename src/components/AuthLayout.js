@@ -1,8 +1,9 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
+import React, { useEffect }  from "react";
+import { Redirect , useLocation } from "react-router-dom";
 import {  useDispatch, useSelector } from "react-redux";
 import { Field, reduxForm } from "redux-form";
-import { signup,login} from "../actions/actions";
+import queryString from 'query-string';
+import { signup,login,googleAuthenticate} from "../actions/actions";
 import axios from "axios";
 import { FaGoogle } from "react-icons/fa";
 
@@ -11,6 +12,21 @@ import { FaGoogle } from "react-icons/fa";
 
 
 const AuthLayout = ({handleSubmit}) => {
+ let location = useLocation();
+
+  useEffect(() => {
+      const values = queryString.parse(location.search);
+      const state = values.state ? values.state : null;
+      const code = values.code ? values.code : null;
+
+      console.log('State: ' + state);
+      console.log('Code: ' + code);
+
+      if (state && code) {
+        dispatch(googleAuthenticate(state, code));
+      }
+  }, [location]);
+
   const authState = useSelector(state => state.auth);
   const {isAuthenticated, alertMessage, showMessage} = authState;
 const dispatch = useDispatch()
@@ -31,9 +47,6 @@ const dispatch = useDispatch()
         }
     };   
   
-// if (accountCreated) {
-//   return <Redirect to="/success" />;
-// }
 if (isAuthenticated) {
   return <Redirect to="/dashboard" />;
 }
