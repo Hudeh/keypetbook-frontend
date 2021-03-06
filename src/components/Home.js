@@ -14,7 +14,7 @@ const Home = ({ match, history }) => {
       dispatch(import_csv())
   }, []);
 
-  const authuser = useSelector((state) => state.auth);
+  const authuser = useSelector((state) => state.auth.isAuthenticated);
   
   return (
     <>
@@ -31,7 +31,7 @@ const Home = ({ match, history }) => {
       <div className="main">
         <header className="nav">
           <ul>
-            {/* <li>{isAuthenticated ? ` Welcome: ${first_name} ${last_name}`: null}</li> */}
+            <li>{authuser ? ` Welcome to your Dashboard`: null}</li>
             <li
               onClick={() => {
                 logoutButton();
@@ -42,7 +42,7 @@ const Home = ({ match, history }) => {
             </li>
           </ul>
         </header>
-         <Report covid_csv={covid_csv} />
+         <Report />
         <footer>
           <p>
             Created with <i className="fa fa-heart"></i> by --
