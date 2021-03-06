@@ -82,6 +82,7 @@ export const load_user = () => async dispatch => {
                 type: USER_LOADED_SUCCESS,
                 payload: res.data
             });
+            dispatch(import_csv())
         } catch (err) {
             dispatch({
                 type: USER_LOADED_FAIL

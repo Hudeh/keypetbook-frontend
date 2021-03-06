@@ -17,7 +17,7 @@ return (
       <th>new_deaths</th>
       <th>cases_smoothed</th>
     </tr>
-    {covid_csv.length ?
+    {covid_csv.length >=1 ?
     	(covid_csv.map(data =>{
         return data.africa.map((africa)=>{
             const {continent,location,date,total_cases,new_cases,total_cases_per_million,
