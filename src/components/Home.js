@@ -13,10 +13,9 @@ const Home = ({ match, history }) => {
   useEffect(() => {
       dispatch(import_csv())
   }, []);
-  
+
   const authuser = useSelector((state) => state.auth);
-  const {isAuthenticated, user, covid_csv } = authuser;
-  // const {first_name, last_name} = user;
+  
   return (
     <>
       <div className="sidenav">

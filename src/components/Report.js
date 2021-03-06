@@ -1,6 +1,7 @@
 import React from 'react'
-
-const Report = ({covid_csv}) => {
+import { useSelector} from "react-redux";
+const Report = () => {
+  const covid_csv = useSelector((state) => state.auth.covid_csv);
 return (
 
          <div className="report report">
@@ -17,7 +18,7 @@ return (
       <th>new_deaths</th>
       <th>cases_smoothed</th>
     </tr>
-    {covid_csv.length >=1 ?
+    {covid_csv.length >=1  &&
     	(covid_csv.map(data =>{
         return data.africa.map((africa)=>{
             const {continent,location,date,total_cases,new_cases,total_cases_per_million,
@@ -36,12 +37,7 @@ return (
     </tr>
             )
         })
-    })):
-     ( <div>
-       <p>loading data from server pls wait.....<span>Heroku takes time to import large csv on free plan</span></p>
-        <p>Upgrade plan</p>
-      </div>
-     )
+    }))
 }
   </table>
          </div>
