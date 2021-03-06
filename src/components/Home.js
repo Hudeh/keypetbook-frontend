@@ -1,16 +1,19 @@
-import React  from "react";
+import React,{useEffect}  from "react";
 import { Link} from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout} from "../actions/actions";
 import Report from './Report'
-
+import { import_csv } from '../actions/actions';
 
 const Home = ({ match, history }) => {
   const dispatch = useDispatch();
   const logoutButton = () => {
     dispatch(logout());
   };
-
+  useEffect(() => {
+      dispatch(import_csv())
+  }, []);
+  
   const authuser = useSelector((state) => state.auth);
   const {isAuthenticated, user, covid_csv } = authuser;
   // const {first_name, last_name} = user;
