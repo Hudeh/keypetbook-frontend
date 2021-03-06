@@ -37,7 +37,11 @@ return (
             )
         })
     })):
-      <p>loading data from server pls wait</p>
+     ( <div>
+         <p>loading data from server pls wait.....<span>Heroku takes time to import large csv on free plan</span></p>
+        <p>Upgrade plan</p>
+      </div>
+     )
 }
   </table>
          </div>
