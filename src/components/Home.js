@@ -13,7 +13,7 @@ const Home = ({ match, history }) => {
 
   const authuser = useSelector((state) => state.auth);
   const {isAuthenticated, user, covid_csv } = authuser;
-  const {first_name, last_name} = user;
+  // const {first_name, last_name} = user;
   return (
     <>
       <div className="sidenav">
@@ -29,7 +29,7 @@ const Home = ({ match, history }) => {
       <div className="main">
         <header className="nav">
           <ul>
-            <li>{isAuthenticated ? ` Welcome: ${first_name} ${last_name}`: null}</li>
+            {/* <li>{isAuthenticated ? ` Welcome: ${first_name} ${last_name}`: null}</li> */}
             <li
               onClick={() => {
                 logoutButton();

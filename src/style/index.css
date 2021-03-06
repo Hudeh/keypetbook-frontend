@@ -264,10 +264,11 @@ footer a {
     width: 1357px;
     height: 8%;
     margin-left: 180px;
-    justify-content: flex-end;
     display: flex;
 }
-
+.nav ul{
+	text-align:center;
+}
 .sidenav {
   height: 100%;
   width: 180px;
