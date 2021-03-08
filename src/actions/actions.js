@@ -37,17 +37,9 @@ export const showMessage = (message) => (dispatch) => {
 };
 
 export const import_csv = () => async dispatch => {
-    if (localStorage.getItem('access')) {
-        const config = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `JWT ${localStorage.getItem('access')}`,
-                'Accept': 'application/json'
-            }
-        }; 
-
+  
         try {
-            const res = await axios.get("api/covid/csv", config);
+            const res = await axios.get("api/covid/csv");
     
             dispatch({
                 type: FETCH_ALL_REPORT_SUCCESS,
@@ -57,13 +49,7 @@ export const import_csv = () => async dispatch => {
             dispatch({
                 type: FETCH_REPORT_FAIL
             });
-            console.log("err******:",err)
         }
-    } else {
-        dispatch({
-            type: FETCH_REPORT_FAIL
-        });
-    }
 };
 export const load_user = () => async dispatch => {
     if (localStorage.getItem('access')) {
@@ -82,7 +68,6 @@ export const load_user = () => async dispatch => {
                 type: USER_LOADED_SUCCESS,
                 payload: res.data
             });
-            dispatch(import_csv())
         } catch (err) {
             dispatch({
                 type: USER_LOADED_FAIL
@@ -110,7 +95,7 @@ export const googleAuthenticate = (state, code) => async dispatch => {
         const formBody = Object.keys(details).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(details[key])).join('&');
 
         try {
-            const res = await post(`http://127.0.0.1:8000/auth/o/google-oauth2/?${formBody}`, config);
+            const res = await post(`https://keypetbooks-api.herokuapp.com/auth/o/google-oauth2/?${formBody}`, config);
 
             dispatch({
                 type: GOOGLE_AUTH_SUCCESS,

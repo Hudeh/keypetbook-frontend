@@ -261,9 +261,9 @@ footer a {
     right: 0;
     text-align: center;
     z-index: 999;
-    width: 1357px;
-    height: 8%;
-    margin-left: 180px;
+    width: 1350px;
+    height: 4%;
+    margin-left: 200px;
     display: flex;
 }
 .nav ul{
@@ -271,7 +271,7 @@ footer a {
 }
 .sidenav {
   height: 100%;
-  width: 180px;
+  width: 200px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -318,8 +318,10 @@ cursor: pointer;
 }
 .report{
 	width: 1300px;
-	height: 100px;
-	margin-top:0;
+	max-width: 1300px;
+	height: auto;
+	margin-top:10px;
+	overflow: auto;
 }
 table {
   font-family: arial, sans-serif;

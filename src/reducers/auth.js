@@ -26,7 +26,7 @@ const initialState = {
     alertMessage: "",
     showMessage: false,
     isLoading: false,
-    covid_csv:[]
+    covid_csv:{}
 };
 
 const auth= (state = initialState, action) =>{
