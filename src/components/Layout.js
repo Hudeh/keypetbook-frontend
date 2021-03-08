@@ -7,6 +7,7 @@ const Layout = ({children }) => {
     useEffect(() => {
         dispatch(checkAuthenticated());
         dispatch(load_user());
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

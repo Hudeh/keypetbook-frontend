@@ -12,6 +12,7 @@ const Home = ({ match, history }) => {
   };
   useEffect(() => {
     dispatch(import_csv());
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   const [columns, setColumns] = useState([]);
   const [data, setData] = useState([]);

@@ -25,6 +25,7 @@ const AuthLayout = ({handleSubmit}) => {
       if (state && code) {
         dispatch(googleAuthenticate(state, code));
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location]);
 
   const authState = useSelector(state => state.auth);
